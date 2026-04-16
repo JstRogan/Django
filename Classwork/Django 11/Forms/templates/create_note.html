@@ -1,0 +1,15 @@
+<h1>Create note</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+</form>
+
+{% if submitted_data %}
+    <h2>Submitted</h2>
+    <p><b>Title:</b> {{ submitted_data.title }}</p>
+    <p><b>Content:</b> {{ submitted_data.content }}</p>
+    <p><b>Category:</b> {{ submitted_data.category }}</p>
+    <p><b>Tags:</b> {{ submitted_data.tags }}</p>
+{% endif %}
