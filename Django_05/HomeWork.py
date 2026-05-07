@@ -1,53 +1,90 @@
-class Person:
-    def __init__(self, name, age):
+class Character:
+    def __init__(self, name, health, attack_power):
         self.name = name
-        self.age = age
+        self.health = health
+        self.attack_power = attack_power
 
-    def introduce(self):
-        return f"Меня зовут {self.name}, мне {self.age} лет."
+    def attack(self, other):
+        other.take_damage(self.attack_power)
+        print(f"{self.name} атакует {other.name} и наносит {self.attack_power} урона.")
+
+    def take_damage(self, damage):
+        self.health -= damage
+        if self.health < 0:
+            self.health = 0
+
+    def show_info(self):
+        print(str(self))
 
     def __str__(self):
-        return f"{self.name} ({self.age})"
+        return f"{self.__class__.__name__}: {self.name}, здоровье {self.health}, атака {self.attack_power}"
+
+    def __add__(self, other):
+        return [self, other]
+
+    def __lt__(self, other):
+        return self.attack_power < other.attack_power
 
     def __eq__(self, other):
-        if not isinstance(other, Person):
-            return NotImplemented
-        return self.age == other.age
+        return (
+            self.name == other.name
+            and self.health == other.health
+            and self.attack_power == other.attack_power
+        )
+
+    def __len__(self):
+        return self.health
+
+    def __bool__(self):
+        return self.health > 0
 
 
-class Student(Person):
-    def __init__(self, name, age, group):
-        super().__init__(name, age)
-        self.group = group
-
-    def introduce(self):
-        return f"Меня зовут {self.name}, я учусь в группе {self.group}."
+class Warrior(Character):
+    def attack(self, other):
+        damage = self.attack_power + 5
+        other.take_damage(damage)
+        print(f"Воин {self.name} бьёт мечом {other.name} и наносит {damage} урона.")
 
 
-class Teacher(Person):
-    def __init__(self, name, age, subject):
-        super().__init__(name, age)
-        self.subject = subject
+class Mage(Character):
+    def __init__(self, name, health, attack_power, mana):
+        super().__init__(name, health, attack_power)
+        self.mana = mana
 
-    def introduce(self):
-        return f"Меня зовут {self.name}, я преподаю предмет {self.subject}."
-
-
-def show_introduction(person):
-    print(person.introduce())
-
-
-def main():
-    student = Student("Анна", 20, "Python-1")
-    teacher = Teacher("Игорь", 35, "Django")
-    another_student = Student("Олег", 20, "Python-2")
-
-    show_introduction(student)
-    show_introduction(teacher)
-
-    print(student)
-    print("Одинаковый возраст:", student == another_student)
+    def attack(self, other):
+        if self.mana >= 10:
+            damage = self.attack_power + 10
+            self.mana -= 10
+            other.take_damage(damage)
+            print(f"Маг {self.name} использует заклинание против {other.name} и наносит {damage} урона.")
+        else:
+            super().attack(other)
 
 
-if __name__ == "__main__":
-    main()
+class Archer(Character):
+    def attack(self, other):
+        damage = self.attack_power + 2
+        other.take_damage(damage)
+        print(f"Лучник {self.name} стреляет в {other.name} и наносит {damage} урона.")
+
+
+warrior = Warrior("Артур", 120, 20)
+mage = Mage("Мерлин", 80, 18, 30)
+archer = Archer("Робин", 90, 16)
+
+characters = [warrior, mage, archer]
+
+for character in characters:
+    character.show_info()
+
+print(warrior < mage)
+print(warrior == Warrior("Артур", 120, 20))
+print(len(archer))
+print(bool(mage))
+print(warrior + archer)
+
+warrior.attack(mage)
+mage.attack(archer)
+archer.attack(warrior)
+
+print(bool(mage))
