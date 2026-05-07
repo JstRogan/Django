@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Template Blog{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <h1>Template Blog</h1>
+        <nav>
+            <a href="/">Главная</a>
+            <a href="/posts/">Посты</a>
+        </nav>
+        <hr>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
