@@ -3,10 +3,8 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "student-portal-secret-key"
-
+SECRET_KEY = "course-project-secret-key"
 DEBUG = True
-
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
@@ -16,7 +14,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "main_app",
+    "hello_app",
+    "day_app",
+    "quote_app",
 ]
 
 MIDDLEWARE = [
@@ -29,12 +29,12 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "student_portal.urls"
+ROOT_URLCONF = "course_project.urls"
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -46,7 +46,7 @@ TEMPLATES = [
     }
 ]
 
-WSGI_APPLICATION = "student_portal.wsgi.application"
+WSGI_APPLICATION = "course_project.wsgi.application"
 
 DATABASES = {
     "default": {
@@ -58,13 +58,9 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = []
 
 LANGUAGE_CODE = "ru-ru"
-
 TIME_ZONE = "UTC"
-
 USE_I18N = True
-
 USE_TZ = True
 
 STATIC_URL = "static/"
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
