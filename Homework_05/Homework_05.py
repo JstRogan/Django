@@ -6,7 +6,7 @@ class Character:
 
     def attack(self, other):
         other.take_damage(self.attack_power)
-        print(f"{self.name} атакует {other.name} и наносит {self.attack_power} урона.")
+        print(f"{self.name} атакует {other.name} и наносит {self.attack_power} урона")
 
     def take_damage(self, damage):
         self.health -= damage
@@ -14,10 +14,10 @@ class Character:
             self.health = 0
 
     def show_info(self):
-        print(str(self))
+        print(self)
 
     def __str__(self):
-        return f"{self.__class__.__name__}: {self.name}, здоровье {self.health}, атака {self.attack_power}"
+        return f"{self.__class__.__name__} {self.name}: здоровье {self.health}, атака {self.attack_power}"
 
     def __add__(self, other):
         return [self, other]
@@ -41,9 +41,9 @@ class Character:
 
 class Warrior(Character):
     def attack(self, other):
-        damage = self.attack_power + 5
+        damage = self.attack_power + 10
         other.take_damage(damage)
-        print(f"Воин {self.name} бьёт мечом {other.name} и наносит {damage} урона.")
+        print(f"Воин {self.name} рубит мечом {other.name} и наносит {damage} урона")
 
 
 class Mage(Character):
@@ -52,39 +52,44 @@ class Mage(Character):
         self.mana = mana
 
     def attack(self, other):
-        if self.mana >= 10:
-            damage = self.attack_power + 10
-            self.mana -= 10
+        if self.mana >= 20:
+            self.mana -= 20
+            damage = self.attack_power + 20
             other.take_damage(damage)
-            print(f"Маг {self.name} использует заклинание против {other.name} и наносит {damage} урона.")
+            print(f"Маг {self.name} кастует заклинание в {other.name} и наносит {damage} урона")
         else:
             super().attack(other)
 
 
 class Archer(Character):
     def attack(self, other):
-        damage = self.attack_power + 2
+        damage = self.attack_power + 5
         other.take_damage(damage)
-        print(f"Лучник {self.name} стреляет в {other.name} и наносит {damage} урона.")
+        print(f"Лучник {self.name} стреляет в {other.name} и наносит {damage} урона")
 
 
-warrior = Warrior("Артур", 120, 20)
-mage = Mage("Мерлин", 80, 18, 30)
-archer = Archer("Робин", 90, 16)
+warrior = Warrior("Arthur", 120, 20)
+mage = Mage("Merlin", 90, 15, 60)
+archer = Archer("Robin", 100, 18)
+enemy = Character("Goblin", 80, 10)
 
 characters = [warrior, mage, archer]
 
 for character in characters:
     character.show_info()
 
-print(warrior < mage)
-print(warrior == Warrior("Артур", 120, 20))
-print(len(archer))
-print(bool(mage))
-print(warrior + archer)
+print(warrior == archer)
+print(warrior == Warrior("Arthur", 120, 20))
+print(mage < warrior)
+print(len(mage))
+print(bool(archer))
 
-warrior.attack(mage)
-mage.attack(archer)
-archer.attack(warrior)
+team = warrior + mage
+for member in team:
+    member.show_info()
 
-print(bool(mage))
+for character in characters:
+    character.attack(enemy)
+
+enemy.show_info()
+print(bool(enemy))
