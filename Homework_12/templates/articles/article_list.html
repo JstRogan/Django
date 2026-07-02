@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Статьи</h1>
+    <div class="articles">
+        {% for article in articles %}
+            <article class="card">
+                <a href="{% url 'articles:article_detail' article.id %}">
+                    <img src="{{ article.image }}" alt="{{ article.title }}">
+                </a>
+                <div class="card-body">
+                    <p class="meta">
+                        <span class="category">{{ article.category }}</span>
+                        <span>{{ article.created_at }}</span>
+                    </p>
+                    <h2><a href="{% url 'articles:article_detail' article.id %}">{{ article.title }}</a></h2>
+                    <p class="author">Автор: {{ article.author }}</p>
+                    <p>{{ article.content|truncatewords:25 }}</p>
+                    <div class="card-footer">
+                        <a href="{% url 'articles:article_detail' article.id %}" class="read-more">Читать далее</a>
+                        <form method="post" action="{% url 'articles:article_react' article.id %}" class="reactions">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.path }}">
+                            <button type="submit" name="action" value="like">&#128077; {{ article.likes }}</button>
+                            <button type="submit" name="action" value="dislike">&#128078; {{ article.dislikes }}</button>
+                        </form>
+                    </div>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+{% endblock %}
